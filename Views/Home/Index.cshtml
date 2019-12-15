@@ -1,0 +1,19 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Maistas";
+}
+<div class="text-center">
+    <div class="jumbotron">
+        <h1>Maistas</h1>
+        <p class="lead">Maisto ir kitų prekių užsakymas</p>
+    </div>
+    <div class="row text-center">
+        <h4>@Html.ActionLink("Registruotis", "Create", "LogsRegs")</h4>
+    </div>
+    <div class="row text-center">
+        <h4>@Html.ActionLink("Prisijungti", "Login", "LogsRegs")</h4>
+    </div>
+</div>

@@ -1,0 +1,185 @@
+﻿@model IEnumerable<FoodMVC.Models.Food>
+
+@{
+    ViewBag.Title = "Prekių sąrašas";
+}
+
+<br />
+@{
+    //var userRole = TempData["Role"];
+    var userRole = Session["UserRole"];
+    var style = string.Empty;
+    //var style = "color: red";
+}
+
+<h2>Maistas</h2>
+
+@{
+    if (userRole.Equals("admin"))
+    {
+        <p>
+            @Html.ActionLink("Įvesti naują prekę", "Create");
+        </p>
+    }
+
+}
+
+<table class="table">
+    <tr>
+        <th style="width: 2%">
+            Nr
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Item)
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th style="width: 20%"></th>
+    </tr>
+
+    @{
+        int i = 1;
+        foreach (var item in Model)
+        {
+            if (item.Softdel)
+            {
+                style = "color: black";
+            }
+            else
+            {
+                style = "text-decoration: line-through";
+            }
+
+            if (item.Type == 0)
+            {
+                <tr>
+                    <td style="@style">
+                        @i
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Item)
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    @{
+                    if (userRole.Equals("admin"))
+                    {
+                            <td>
+                                @Html.ActionLink("Keisti", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Trinti", "Delete", new { id = item.Id }) |
+                                @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
+                            </td>
+                        }
+                    else
+                    {
+                            <td>
+                                @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
+                            </td>
+                        }
+                }
+                </tr>
+                i = i + 1;
+            }
+        }
+
+    }
+</table>
+
+<h2>Kitos prekės</h2>
+
+@{
+    if (userRole.Equals("admin"))
+    {
+        <p>
+            @Html.ActionLink("Įvesti naują prekę", "Create");
+        </p>
+    }
+}
+
+<table class="table">
+    <tr>
+        <th style="width: 2%">
+            Nr
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Item)
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th style="width: 10%">
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th style="width: 20%"></th>
+    </tr>
+
+    @{
+        i = 1;
+        foreach (var item in Model)
+        {
+            if (item.Softdel)
+            {
+                style = "color: black";
+            }
+            else
+            {
+                style = "text-decoration: line-through";
+            }
+
+            if (item.Type == 1)
+            {
+                <tr>
+                    <td style="@style">
+                        @i
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Item)
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td style="@style">
+                        @Html.DisplayFor(modelItem => item.Notes)
+                    </td>
+                    @{
+                        if (userRole.Equals("admin"))
+                        {
+                            <td>
+                                @Html.ActionLink("Keisti", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Trinti", "Delete", new { id = item.Id }) |
+                                @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
+                            </td>
+                        }
+                    }
+                </tr>
+                i = i + 1;
+            }
+        }
+
+    }
+</table>
+
+<br />
+@using (Html.BeginForm("SendMail", "Mail", FormMethod.Post))
+{
+    <div class="form-group">
+        <div class="col-md-6 text-left">
+            <input type="submit" value="Paruošti laišką" class="btn btn-default" />
+        </div>
+    </div>
+}
+<br />

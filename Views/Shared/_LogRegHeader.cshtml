@@ -1,0 +1,17 @@
+﻿<ul class="nav navbar-nav navbar-right">
+    @if (TempData["Email"] != null)
+    {
+        <li>@Html.ActionLink(TempData["User"].ToString(), "Index", "Home")</li>
+        <li>@Html.ActionLink(TempData["Email"].ToString(), "SendMail", "Mail")</li>
+        <li>@Html.ActionLink("Atsijungti", "Logout", "LogsRegs")</li>
+    }
+    else
+    {
+        <li>
+            @Html.ActionLink("Registruotis", "Create", "LogsRegs")
+        </li>
+        <li>
+            @Html.ActionLink("Prisijungti", "Login", "LogsRegs")
+        </li>
+    }
+</ul>

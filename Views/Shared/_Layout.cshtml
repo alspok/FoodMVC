@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @using FoodMVC.Helpers
+    @using FoodMVC.Models
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("MAISTAS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+                    <li>@Html.ActionLink("Apie mus", "About", "Home")</li>
+                    <li>@Html.ActionLink("Kontaktai", "Contact", "Home")</li>
+                </ul>
+                @if (ViewBag.Loged == "logedAsAdmin")
+                {
+                    @Html.Partial("_LogedHeader")
+                }
+                else
+                {
+                    @Html.Partial("_LogRegHeader")
+                }
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="container body-content">
+        <div class="col-md-4">
+            @DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm")
+        </div>
+        <div class="col-md-4">
+            @{
+                GlobalPropInit globalPropInit = new GlobalPropInit();
+                var last = globalPropInit.PropInit();
+            }
+            <span>Paskutinis prisijungimas @last.ToString("yyyy'-'MM'-'dd' 'HH':'mm")</span>
+            <span></span>
+        </div>
+        <div class="col-md-4">
+            <span>Paskutinis pakeitimas </span>
+            <span style="color:red">@last.ToString("yyyy'-'MM'-'dd' 'HH':'mm")</span>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-left">&copy; @DateTime.Now.Year - ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

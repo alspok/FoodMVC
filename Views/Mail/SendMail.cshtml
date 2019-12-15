@@ -1,0 +1,86 @@
+﻿
+@model FoodMVC.Models.SendMailModel
+
+@{
+    ViewBag.Title = "El.paštas";
+    var userRole = Session["UserRole"];
+}
+
+@using FoodMVC.Helpers
+@using FoodMVC.Models
+
+<h2>El. paštas</h2>
+
+@{
+    var content = TempData["FoodAreaContent"].ToString();
+}
+
+@using (Html.BeginForm("Email", "Mail", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(model => model.EmailFrom, new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(model => model.EmailFrom, new { @class = "col-md-2", @style = "width:50%" })
+        </div>
+    </div>
+
+    @{
+        var role = Session["UserRole"];
+
+        if (role.Equals("admin"))
+        {
+            GlobalPropInit globalPropInit = new GlobalPropInit();
+            globalPropInit.EmailPropInit();
+            //GlobalProp.CurrentUsersEmailList = globalPropInit.EmailPropInit();
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailTo, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("useremail",
+                new SelectList(GlobalProp.CurrentUsersEmailList),
+                "El.pašto adresas",
+                new { @class = "form-control col-md-2", @style = "width:50%" })
+                @*@Html.ValidationMessageFor(model => model.EmailTo,"", new { @class = "text-danger" })*@
+            </div>
+            </div>
+        }
+        else
+        {
+            Model.EmailTo = Session["UserEmail"].ToString();
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmailTo, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.EmailTo, new { @class = "form-control col-md-2", @style = "width:50%", name = "guestemail" })
+                    @*@Html.ValidationMessageFor(model => model.EmailTo, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+        }
+    }
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Subject, new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.Subject, new { @class = "col-md-2", @style = "width:50%" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmailText, new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.TextArea("foodarea", content, new { rows = 12, cols = 200, @class = "form-control col-md-2" })
+                    </div>
+                </div>
+
+                <br />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Siųsti" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
