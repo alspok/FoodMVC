@@ -18,16 +18,18 @@ namespace FoodMVC.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Reikia įvesti vartotojo vardą")]
         [Display(Name ="Vartotojo vardas")]
+        [Required(ErrorMessage ="Reikia įvesti vartotojo vardą")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage ="Reikia įvesti slaptažodį")]
         [Display(Name ="Slaptažodis")]
+        [Required(ErrorMessage ="Reikia įvesti slaptažodį")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage ="Reikia įvesti el. pašto adresą")]
         [Display(Name ="El. pašto adresas")]
+        [Required(ErrorMessage ="Reikia suvesti el. pašto adresą")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required]
@@ -36,3 +38,5 @@ namespace FoodMVC.Models
         public Nullable<System.DateTime> LastMod { get; set; }
     }
 }
+
+//C:\Users\alvydas\source\repos\FoodMVC\Models\LogReg.cs

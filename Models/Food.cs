@@ -12,27 +12,32 @@ namespace FoodMVC.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
 
     public partial class Food
     {
         [Key]
         public int Id { get; set; }
 
+        [Display(Name = "Prekė")]
         [Required(ErrorMessage ="Reikia įvesti prekės pavadinimą")]
-        [Display(Name ="Prekė")]
         public string Item { get; set; }
 
-        [Required(ErrorMessage ="Reikia įvesti kiekį")]
-        [Display(Name ="Kiekis")]
+        [Display(Name ="Prekės kiekis")]
+        [Required(ErrorMessage ="Reikia įvesti prekės kiekį")]
         public string Quantity { get; set; }
 
         [Display(Name ="Pastabos")]
         public string Notes { get; set; }
 
-        [Required]
+        [Display(Name ="Prekės tipas")]
+        [Required(ErrorMessage ="Reikia įvesti prekės tipą - maistas 0, kitos prekės 1")]
         public int Type { get; set; }
 
         [Required]
         public bool Softdel { get; set; }
+        public string Selection { get; set; }
     }
+
+    
 }

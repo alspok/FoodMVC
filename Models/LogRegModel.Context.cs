@@ -10,11 +10,14 @@
 namespace FoodMVC.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
     public partial class FoodDatabaseEntities10 : DbContext
     {
+        internal readonly IEnumerable<object> LogReg;
+
         public FoodDatabaseEntities10()
             : base("name=FoodDatabaseEntities10")
         {

@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @using FoodMVC.Helpers
     @using FoodMVC.Models
 </head>
 <body>
@@ -22,40 +21,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                     <li>@Html.ActionLink("Apie mus", "About", "Home")</li>
                     <li>@Html.ActionLink("Kontaktai", "Contact", "Home")</li>
                 </ul>
-                @if (ViewBag.Loged == "logedAsAdmin")
-                {
-                    @Html.Partial("_LogedHeader")
-                }
-                else
-                {
+                <ul class="text-right">
                     @Html.Partial("_LogRegHeader")
-                }
+                </ul>
             </div>
         </div>
     </div>
 
     <br />
-    <div class="container body-content">
-        <div class="col-md-4">
-            @DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm")
-        </div>
-        <div class="col-md-4">
-            @{
-                GlobalPropInit globalPropInit = new GlobalPropInit();
-                var last = globalPropInit.PropInit();
-            }
-            <span>Paskutinis prisijungimas @last.ToString("yyyy'-'MM'-'dd' 'HH':'mm")</span>
-            <span></span>
-        </div>
-        <div class="col-md-4">
-            <span>Paskutinis pakeitimas </span>
-            <span style="color:red">@last.ToString("yyyy'-'MM'-'dd' 'HH':'mm")</span>
-        </div>
-    </div>
+
+    @Html.Action("LogModProp", "GlobalProp", new { globalProp = new GlobalProp()})
+     
 
     <div class="container body-content">
         @RenderBody()

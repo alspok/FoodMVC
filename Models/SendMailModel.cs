@@ -29,5 +29,7 @@ namespace FoodMVC.Models
         public string EmailText { get; set; }
         
         public string UserRole { get; set; }
+
+        public List<string> EmailToList { get; set; }
     }
 }

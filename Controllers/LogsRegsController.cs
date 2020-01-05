@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FoodMVC.Models;
+using FoodMVC.Helpers;
 
 namespace FoodMVC.Controllers
 {
     public class LogsRegsController : Controller
     {
-        private FoodDatabaseEntities10 db = new FoodDatabaseEntities10();
+        private readonly FoodDatabaseEntities6 db = new FoodDatabaseEntities6();
+        private readonly FoodDatabaseEntities10 ldb = new FoodDatabaseEntities10();
 
         [HttpGet]
         public ActionResult Login()
@@ -24,25 +26,24 @@ namespace FoodMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LogReg logReg)
         {
-            if (db.LogRegs.Where(u => u.UserName == logReg.UserName).FirstOrDefault() != null &&
-                db.LogRegs.Where(u => u.Email == logReg.Email).FirstOrDefault() != null &&
-                db.LogRegs.Where(u => u.Password == logReg.Password).FirstOrDefault() != null)
+            if (ldb.LogRegs.Where(u => u.UserName == logReg.UserName).FirstOrDefault() != null &&
+                ldb.LogRegs.Where(u => u.Email == logReg.Email).FirstOrDefault() != null &&
+                ldb.LogRegs.Where(u => u.Password == logReg.Password).FirstOrDefault() != null)
             {
-                int userId = db.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Id).FirstOrDefault();
-                string userEmail = db.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Email).FirstOrDefault();
-                string userRole = db.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Role).FirstOrDefault();
+                int userId = ldb.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Id).FirstOrDefault();
+                string userEmail = ldb.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Email).FirstOrDefault();
+                string userRole = ldb.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Role).FirstOrDefault();
 
-                LogReg userToUpdate = db.LogRegs.Find(userId);
-                userToUpdate.LastLog = DateTime.Now;
-                db.SaveChanges();
+                LogModTime logModTime = new LogModTime();
+                logModTime.LogTimeChange(userId);
 
                 Session["UserId"] = userId;
                 Session["UserEmail"] = userEmail;
                 Session["UserRole"] = userRole;
 
-                TempData["User"] = db.LogRegs.Where(u => u.Id == userId).Select(v => v.UserName).FirstOrDefault();
-                TempData["Email"] = db.LogRegs.Where(u => u.Id == userId).Select(v => v.Email).FirstOrDefault();
-                TempData["Role"] = db.LogRegs.Where(u => u.Id == userId).Select(v => v.Role).FirstOrDefault();
+                TempData["User"] = ldb.LogRegs.Where(u => u.Id == userId).Select(v => v.UserName).FirstOrDefault();
+                TempData["Email"] = ldb.LogRegs.Where(u => u.Id == userId).Select(v => v.Email).FirstOrDefault();
+                TempData["Role"] = ldb.LogRegs.Where(u => u.Id == userId).Select(v => v.Role).FirstOrDefault();
 
                 return RedirectToAction("Index", "Foods");
             }
@@ -54,7 +55,7 @@ namespace FoodMVC.Controllers
         // GET: Regs
         public ActionResult Index()
         {
-            return View(db.LogRegs.ToList());
+            return View(ldb.LogRegs.ToList());
         }
 
         // GET: Regs/Details/5
@@ -65,7 +66,7 @@ namespace FoodMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            LogReg logReg = db.LogRegs.Find(id);
+            LogReg logReg = ldb.LogRegs.Find(id);
 
             if (logReg == null)
             {
@@ -89,13 +90,13 @@ namespace FoodMVC.Controllers
         public ActionResult Create(LogReg logReg)
         {
             if (ModelState.IsValid &&
-                db.LogRegs.Where(u => u.UserName == logReg.UserName).FirstOrDefault() == null &&
-                db.LogRegs.Where(u => u.Email == logReg.Email).FirstOrDefault() == null)
+                ldb.LogRegs.Where(u => u.UserName == logReg.UserName).FirstOrDefault() == null &&
+                ldb.LogRegs.Where(u => u.Email == logReg.Email).FirstOrDefault() == null)
             {
-                db.LogRegs.Add(logReg);
-                db.SaveChanges();
+                ldb.LogRegs.Add(logReg);
+                ldb.SaveChanges();
 
-                LogReg lastReg = db.LogRegs.Find(logReg.Id);
+                LogReg lastReg = ldb.LogRegs.Find(logReg.Id);
 
                 return View("Register", lastReg);
             }
@@ -118,7 +119,7 @@ namespace FoodMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            LogReg logReg = db.LogRegs.Find(id);
+            LogReg logReg = ldb.LogRegs.Find(id);
             if (logReg == null)
             {
                 return HttpNotFound();
@@ -149,7 +150,7 @@ namespace FoodMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LogReg logReg = db.LogRegs.Find(id);
+            LogReg logReg = ldb.LogRegs.Find(id);
             if (logReg == null)
             {
                 return HttpNotFound();
@@ -162,10 +163,15 @@ namespace FoodMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LogReg logReg = db.LogRegs.Find(id);
-            db.LogRegs.Remove(logReg);
-            db.SaveChanges();
+            LogReg logReg = ldb.LogRegs.Find(id);
+            ldb.LogRegs.Remove(logReg);
+            ldb.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Logout()
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

@@ -7,13 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FoodMVC.Models;
+using FoodMVC.Helpers;
 
 namespace FoodMVC.Controllers
 {
     public class FoodsController : Controller
     {
-        private FoodDatabaseEntities6 db = new FoodDatabaseEntities6();
-        private FoodDatabaseEntities10 ldb = new FoodDatabaseEntities10();
+        private readonly FoodDatabaseEntities6 db = new FoodDatabaseEntities6();
+        private readonly FoodDatabaseEntities10 ldb = new FoodDatabaseEntities10();
 
         // GET: Foods
         public ActionResult Index()
@@ -52,12 +53,19 @@ namespace FoodMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Item,Quantity,Notes,Type")] Food food)
+        public ActionResult Create(Food food)
         {
+            food.Type = food.Selection == "maistas" ? 0 : 1;
+
             if (ModelState.IsValid)
             {
                 db.Foods.Add(food);
                 db.SaveChanges();
+
+                var userId = Convert.ToInt32(Session["UserId"]);
+                LogModTime logModTime = new LogModTime();
+                logModTime.ModTimeChange(userId);
+
                 return RedirectToAction("Index");
             }
 
@@ -84,12 +92,19 @@ namespace FoodMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Item,Quantity,Notes,Type")] Food food)
+        public ActionResult Edit( Food food)
         {
+            food.Type = food.Selection == "maistas" ? 0 : 1;
+
             if (ModelState.IsValid)
             {
                 db.Entry(food).State = EntityState.Modified;
                 db.SaveChanges();
+
+                var userId = Convert.ToInt32(Session["UserId"]);
+                LogModTime logModTime = new LogModTime();
+                logModTime.ModTimeChange(userId);
+
                 return RedirectToAction("Index");
             }
             return View(food);
@@ -105,6 +120,10 @@ namespace FoodMVC.Controllers
             Food food = db.Foods.Find(id);
             if (food == null)
             {
+                var userId = Convert.ToInt32(Session["UserId"]);
+                LogModTime logModTime = new LogModTime();
+                logModTime.ModTimeChange(userId);
+
                 return HttpNotFound();
             }
 
@@ -123,6 +142,10 @@ namespace FoodMVC.Controllers
             if (softDelete.Softdel) softDelete.Softdel = false;
                 else  softDelete.Softdel = true;
             db.SaveChanges();
+
+            var userId = Convert.ToInt32(Session["UserId"]);
+            LogModTime logModTime = new LogModTime();
+            logModTime.ModTimeChange(userId);
 
             TempData["Role"] = ldb.LogRegs.Select(v => v.Role); ;
 

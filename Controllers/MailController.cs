@@ -13,13 +13,20 @@ namespace FoodMVC.Controllers
 {
     public class MailController : Controller
     {
-        private FoodDatabaseEntities6 db = new FoodDatabaseEntities6();
-        private FoodDatabaseEntities10 ldb = new FoodDatabaseEntities10();
+        private readonly FoodDatabaseEntities6 db = new FoodDatabaseEntities6();
+        private readonly FoodDatabaseEntities10 ldb = new FoodDatabaseEntities10();
 
         // GET: Mail
         public ActionResult Index()
         {
             return View(ldb.LogRegs.ToList());
+        }
+
+        public ActionResult EmailList(SendMailModel sendMailModel)
+        {
+            sendMailModel.EmailToList = ldb.LogRegs.Select(u => u.Email).ToList();
+
+            return View(sendMailModel);
         }
 
         public ActionResult SendMail(SendMailModel sendMailModel)
@@ -58,18 +65,14 @@ namespace FoodMVC.Controllers
         {
             sendMailModel.EmailText = Request.Form["foodarea"];
 
-            var role = Session["UserRole"];
+            object role = Session["UserRole"];
 
-            if( role.Equals("admin"))
-            {
-                sendMailModel.EmailTo = Request.Form["useremail"];
-            }
-            else
+            if (role.Equals("guest"))
             {
                 sendMailModel.EmailTo = Session["UserEmail"].ToString();
             }
 
-            using (MailMessage mm = new MailMessage(sendMailModel.EmailFrom, sendMailModel.EmailTo))
+            using (var mm = new MailMessage(sendMailModel.EmailFrom, sendMailModel.EmailTo))
             {
                 mm.Subject = sendMailModel.Subject;
                 mm.Body = sendMailModel.EmailText;
@@ -83,7 +86,7 @@ namespace FoodMVC.Controllers
                     smtp.Credentials = NetworkCred;
                     smtp.Port = 25;
                     smtp.Send(mm);
-                    ViewBag.Message = "Email sent.";
+                    ViewBag.Message = DateTime.Now;
                 }
             }
 
@@ -121,7 +124,7 @@ namespace FoodMVC.Controllers
             if (ModelState.IsValid)
             {
                 ldb.LogRegs.Add(logReg);
-                db.SaveChanges();
+                ldb.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -181,7 +184,7 @@ namespace FoodMVC.Controllers
         {
             LogReg logReg = ldb.LogRegs.Find(id);
             ldb.LogRegs.Remove(logReg);
-            db.SaveChanges();
+            ldb.SaveChanges();
             return RedirectToAction("Index");
         }
 
