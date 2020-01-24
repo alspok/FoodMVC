@@ -20,24 +20,22 @@ namespace FoodMVC.Models
         public int Id { get; set; }
 
         [Display(Name = "Prekė")]
-        [Required(ErrorMessage ="Reikia įvesti prekės pavadinimą")]
+        [Required(ErrorMessage = "Reikia įvesti prekės pavadinimą")]
         public string Item { get; set; }
 
-        [Display(Name ="Prekės kiekis")]
-        [Required(ErrorMessage ="Reikia įvesti prekės kiekį")]
+        [Display(Name = "Prekės kiekis")]
+        [Required(ErrorMessage = "Reikia įvesti prekės kiekį")]
         public string Quantity { get; set; }
 
-        [Display(Name ="Pastabos")]
+        [Display(Name = "Pastabos")]
         public string Notes { get; set; }
 
-        [Display(Name ="Prekės tipas")]
-        [Required(ErrorMessage ="Reikia įvesti prekės tipą - maistas 0, kitos prekės 1")]
+        [Display(Name = "Prekės tipas")]
+        [Required(ErrorMessage = "Reikia įvesti prekės tipą - maistas 0, kitos prekės 1")]
         public int Type { get; set; }
 
         [Required]
-        public bool Softdel { get; set; }
+        public int Softdel { get; set; }
         public string Selection { get; set; }
     }
-
-    
 }

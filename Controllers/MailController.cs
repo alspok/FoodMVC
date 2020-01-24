@@ -39,7 +39,7 @@ namespace FoodMVC.Controllers
             int i = 1;
             foreach (var item in foodList)
             {
-                if (item.Type == 0 && item.Softdel == true)
+                if (item.Type == 0 && item.Softdel == 0)
                 {
                     foodAreaContent += i++ + ". " + item.Item + " " + item.Quantity + " " + item.Notes + "\n";
                 }
@@ -48,7 +48,7 @@ namespace FoodMVC.Controllers
             i = 1;
             foreach (var item in foodList)
             {
-                if (item.Type == 1 && item.Softdel == true)
+                if (item.Type == 1 && item.Softdel == 0)
                 {
                     nonfoodAreaContent += i++ + ". " + item.Item + " " + item.Quantity + " " + item.Notes + "\n";
                 }
@@ -66,6 +66,9 @@ namespace FoodMVC.Controllers
             sendMailModel.EmailText = Request.Form["foodarea"];
 
             object role = Session["UserRole"];
+            ViewBag.EmailTo = sendMailModel.EmailTo;
+
+
 
             if (role.Equals("guest"))
             {
@@ -125,6 +128,8 @@ namespace FoodMVC.Controllers
             {
                 ldb.LogRegs.Add(logReg);
                 ldb.SaveChanges();
+                ldb.Dispose();
+
                 return RedirectToAction("Index");
             }
 
@@ -157,6 +162,8 @@ namespace FoodMVC.Controllers
             {
                 db.Entry(logReg).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Dispose();
+
                 return RedirectToAction("Index");
             }
             return View(logReg);
@@ -185,6 +192,8 @@ namespace FoodMVC.Controllers
             LogReg logReg = ldb.LogRegs.Find(id);
             ldb.LogRegs.Remove(logReg);
             ldb.SaveChanges();
+            ldb.Dispose();
+
             return RedirectToAction("Index");
         }
 

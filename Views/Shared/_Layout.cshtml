@@ -26,21 +26,24 @@
                 </ul>
                 <ul class="text-right">
                     @Html.Partial("_LogRegHeader")
+                    @*@Html.Action("LogModTime", "Time")*@
+                    @*@Html.Partial("HeaderLogModTime", "LogRegs")*@
+                    @*@Html.Partial("_LogModTime")*@
                 </ul>
             </div>
         </div>
     </div>
 
     <br />
+    @Html.Action("LogModTime", "Time")
+    @*@Html.Action("LogModProp", "GlobalProp", new { globalProp = new GlobalProp()})*@
 
-    @Html.Action("LogModProp", "GlobalProp", new { globalProp = new GlobalProp()})
-     
 
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p class="text-left">&copy; @DateTime.Now.Year - ASP.NET Application</p>
+            <p class="text-left">&copy; @DateTimeOffset.Now.Year - ASP.NET Application</p>
         </footer>
     </div>
 

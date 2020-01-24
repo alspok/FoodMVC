@@ -1,9 +1,18 @@
-﻿
+﻿@model FoodMVC.Models.SendMailModel
 @{
     ViewBag.Title = "Laiškas išsiustas";
 }
 
-<h2>Laiškas el. paštu sėkmingai išsiustas</h2>
 
-@ViewBag.Message
+<h2>
+    Laiškas el. paštu sėkmingai išsiustas adresu 
+    <span style="font-size: 20px; color: blue">@ViewBag.EmailTo</span>
+</h2>
+
+<p>@ViewBag.Message</p>
+
+<p>@Html.ActionLink("Grįžti į produktų sąrašą", "Index", "Foods")</p>
+
+
+
 

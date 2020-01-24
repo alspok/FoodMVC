@@ -12,7 +12,7 @@ namespace FoodMVC.Models
         public List<string> UsersEmailList { get; set; }
         public DateTime CuruentUserLastLog { get; set; }
         public DateTime CurrentUserLastMod { get; set; }
-        public DateTime LastLogin { get; set; }
+        public DateTime LastLog { get; set; }
         public DateTime LastMod { get; set; }
         public string CurrentUserRole { get; set; }
     }

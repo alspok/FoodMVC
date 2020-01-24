@@ -31,6 +31,7 @@ namespace FoodMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Food food = db.Foods.Find(id);
             if (food == null)
             {
@@ -61,10 +62,11 @@ namespace FoodMVC.Controllers
             {
                 db.Foods.Add(food);
                 db.SaveChanges();
+                db.Dispose();
 
                 var userId = Convert.ToInt32(Session["UserId"]);
-                LogModTime logModTime = new LogModTime();
-                logModTime.ModTimeChange(userId);
+                ModTime modTime = new ModTime();
+                modTime.ModTimeChange(userId);
 
                 return RedirectToAction("Index");
             }
@@ -92,7 +94,7 @@ namespace FoodMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( Food food)
+        public ActionResult Edit(Food food)
         {
             food.Type = food.Selection == "maistas" ? 0 : 1;
 
@@ -100,10 +102,11 @@ namespace FoodMVC.Controllers
             {
                 db.Entry(food).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Dispose();
 
                 var userId = Convert.ToInt32(Session["UserId"]);
-                LogModTime logModTime = new LogModTime();
-                logModTime.ModTimeChange(userId);
+                ModTime modTime = new ModTime();
+                modTime.ModTimeChange(userId);
 
                 return RedirectToAction("Index");
             }
@@ -111,18 +114,18 @@ namespace FoodMVC.Controllers
         }
 
         // GET: Foods/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
             Food food = db.Foods.Find(id);
             if (food == null)
             {
                 var userId = Convert.ToInt32(Session["UserId"]);
-                LogModTime logModTime = new LogModTime();
-                logModTime.ModTimeChange(userId);
+                ModTime modTime = new ModTime();
+                modTime.ModTimeChange(userId);
 
                 return HttpNotFound();
             }
@@ -131,21 +134,34 @@ namespace FoodMVC.Controllers
         }
 
         //GET:Foods/SoftDelete/5
-        public ActionResult SoftDelete(int? id)
+        public ActionResult SoftDelete(int id)
         {
-            if (id == null)
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+
+            var softDel = db.Foods.Find(id);
+
+            switch (softDel.Softdel)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case 0:
+                    softDel.Softdel = 1;
+                    break;
+                case 1:
+                    softDel.Softdel = 2;
+                    break;
+                case 2:
+                    softDel.Softdel = 0;
+                    break;
             }
 
-            var softDelete = db.Foods.Find(id);
-            if (softDelete.Softdel) softDelete.Softdel = false;
-                else  softDelete.Softdel = true;
             db.SaveChanges();
+            db.Dispose();
 
             var userId = Convert.ToInt32(Session["UserId"]);
-            LogModTime logModTime = new LogModTime();
-            logModTime.ModTimeChange(userId);
+            ModTime modTime = new ModTime();
+            modTime.ModTimeChange(userId);
 
             TempData["Role"] = ldb.LogRegs.Select(v => v.Role); ;
 
@@ -160,6 +176,12 @@ namespace FoodMVC.Controllers
             Food food = db.Foods.Find(id);
             db.Foods.Remove(food);
             db.SaveChanges();
+            db.Dispose();
+
+            var userId = Convert.ToInt32(Session["UserId"]);
+            ModTime modTime = new ModTime();
+            modTime.ModTimeChange(userId);
+
             return RedirectToAction("Index");
         }
 

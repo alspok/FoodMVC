@@ -5,10 +5,18 @@
 
         if (userRole == "admin" || userRole == "guest")
         {
-            <li>@Html.ActionLink(userRole, "Logout", "LogsRegs") </li>
+            <li>@Html.ActionLink(userRole, "Logout", "LogsRegs", null, new { @style="color: red"}) </li>
             <li>@Html.ActionLink(userEmail, "SendMail", "Mail") </li>
             <li>@Html.ActionLink("Atsijungti", "Logout", "LogsRegs")</li>
         }
+
+        else if (userRole == "superadmin")
+        {
+            <li>@Html.ActionLink(userRole, "Index", "LogsRegs", null, new { @style="color: red"})</li>
+            <li>@Html.ActionLink(userEmail, "SendMail", "Mail") </li>
+            <li>@Html.ActionLink("Atsijungti", "Logout", "LogsRegs")</li>
+        }
+
         else
         {
             <li>@Html.ActionLink("Registruotis", "Create", "LogsRegs")</li>

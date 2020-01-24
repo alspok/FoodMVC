@@ -10,7 +10,6 @@
 namespace FoodMVC.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public partial class LogReg
@@ -22,8 +21,8 @@ namespace FoodMVC.Models
         [Required(ErrorMessage ="Reikia įvesti vartotojo vardą")]
         public string UserName { get; set; }
 
-        [Display(Name ="Slaptažodis")]
-        [Required(ErrorMessage ="Reikia įvesti slaptažodį")]
+        [Display(Name = "Slaptažodis")]
+        [Required(ErrorMessage = "Reikia įvesti slaptažodį")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
@@ -33,10 +32,19 @@ namespace FoodMVC.Models
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Vartotojo tipas")]
         public string Role { get; set; }
+
+        [Display(Name = "Dabar")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
+        public DateTime ResentTime { get; set; } = DateTime.Now.AddHours(2);
+
+        [Display(Name = "Paskutinis prisijungimas")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public Nullable<System.DateTime> LastLog { get; set; }
+
+        [Display(Name ="Paskkutinis pakeitimas")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public Nullable<System.DateTime> LastMod { get; set; }
     }
 }
-
-//C:\Users\alvydas\source\repos\FoodMVC\Models\LogReg.cs

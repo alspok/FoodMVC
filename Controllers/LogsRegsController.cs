@@ -34,8 +34,11 @@ namespace FoodMVC.Controllers
                 string userEmail = ldb.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Email).FirstOrDefault();
                 string userRole = ldb.LogRegs.Where(u => u.Email == logReg.Email).Select(v => v.Role).FirstOrDefault();
 
-                LogModTime logModTime = new LogModTime();
-                logModTime.LogTimeChange(userId);
+                LogTime logTime = new LogTime();
+                logTime.LogTimeChange(userId);
+
+                //ModTime modTime = new ModTime();
+                //modTime.ModTimeChange(userId);
 
                 Session["UserId"] = userId;
                 Session["UserEmail"] = userEmail;
@@ -87,7 +90,7 @@ namespace FoodMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Create([Bind(Include = "Id,UserName,Password,Email,Role")] LogReg logReg)
-        public ActionResult Create(LogReg logReg)
+        public ActionResult Create([Bind(Include = "UserName, Password, Email, Role")] LogReg logReg)
         {
             if (ModelState.IsValid &&
                 ldb.LogRegs.Where(u => u.UserName == logReg.UserName).FirstOrDefault() == null &&
@@ -97,6 +100,8 @@ namespace FoodMVC.Controllers
                 ldb.SaveChanges();
 
                 LogReg lastReg = ldb.LogRegs.Find(logReg.Id);
+
+                ldb.Dispose();
 
                 return View("Register", lastReg);
             }
@@ -132,15 +137,17 @@ namespace FoodMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserName,Password,Email,Role")] LogReg logReg)
+        public ActionResult Edit(LogReg logReg)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(logReg).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("~/Regs/Register");
+                ldb.Entry(logReg).State = EntityState.Modified;
+                ldb.SaveChanges();
+                ldb.Dispose();
+
+                return View(logReg);
             }
-            return View(logReg);
+            return View("Error");
         }
 
         // GET: Regs/Delete/5
@@ -166,11 +173,14 @@ namespace FoodMVC.Controllers
             LogReg logReg = ldb.LogRegs.Find(id);
             ldb.LogRegs.Remove(logReg);
             ldb.SaveChanges();
+            ldb.Dispose();
+
             return RedirectToAction("Index");
         }
 
         public ActionResult Logout()
         {
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 

@@ -31,7 +31,7 @@
     @{
         var role = Session["UserRole"].ToString();
 
-        if (role == "admin")
+        if (role == "admin" || role == "superadmin")
         {
             EmailList emailList = new EmailList();
             Model.EmailToList = emailList.Email();
@@ -39,9 +39,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.EmailTo, new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.DropDownListFor(model => model.EmailTo, new SelectList(Model.EmailToList), "E.mail address")
+                @Html.DropDownListFor(model => model.EmailTo,
+                                      new SelectList(Model.EmailToList),
+                                      "El. pašto adresas",
+                                      new { @class="control-label col-md-2", @style = "width:50%"})
                 @*@Html.DropDownListFor(model => model.EmailToList, Model.EmailToList, "El.pašto adresas", new { @class = "form-control col-md-2", @style = "width:50%" })*@
-                @*@Html.ValidationMessageFor(model => model.EmailTo,"", new { @class = "text-danger" })*@
             </div>
         </div>
         }

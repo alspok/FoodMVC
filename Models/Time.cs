@@ -15,9 +15,8 @@ namespace FoodMVC.Models
     public partial class Time
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public string Email { get; set; }
-        public Nullable<System.DateTime> ResentTime { get; set; } = DateTime.Now;
-        public System.DateTime LogTime { get; set; }
+        public DateTime ResentTime { get; set; } = DateTime.Now;
+        public DateTime LogTime { get; set; }
+        public DateTime ModTime { get; set; }
     }
 }

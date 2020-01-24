@@ -124,7 +124,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\GlobalPropController.cs" />
+    <Compile Include="Controllers\TimeController.cs" />
     <Compile Include="Controllers\FoodDatabaseEntities.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -134,7 +134,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EmailList.cs" />
-    <Compile Include="Helpers\LogModTime.cs" />
+    <Compile Include="Helpers\LogTime.cs" />
+    <Compile Include="Helpers\ModTime.cs" />
     <Compile Include="Models\Food.cs">
       <DependentUpon>FoodModel.tt</DependentUpon>
     </Compile>
@@ -302,7 +303,6 @@
     <Content Include="Views\Foods\Edit.cshtml" />
     <Content Include="Views\Foods\Index.cshtml" />
     <Content Include="Views\LogsRegs\Create.cshtml" />
-    <Content Include="Views\LogsRegs\Index.cshtml" />
     <Content Include="Views\LogsRegs\Register.cshtml" />
     <Content Include="Views\LogsRegs\Delete.cshtml" />
     <Content Include="Views\LogsRegs\Edit.cshtml" />
@@ -320,7 +320,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Views\Shared\_LogModTime.cshtml" />
-    <Content Include="Views\GlobalProp\_LogModProp.cshtml" />
+    <Content Include="Views\LogsRegs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -357,6 +357,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties content_4bootstrap_1min_1css_1map__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

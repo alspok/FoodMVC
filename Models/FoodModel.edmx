@@ -14,7 +14,7 @@
           <Property Name="Quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Softdel" Type="bit" Nullable="false" />
+          <Property Name="Softdel" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="StoreContainer">
           <EntitySet Name="Food" EntityType="Self.Food" Schema="dbo" store:Type="Tables" />
@@ -35,7 +35,7 @@
           <Property Name="Quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Softdel" Type="Boolean" Nullable="false" />
+          <Property Name="Softdel" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>

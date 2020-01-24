@@ -1,12 +1,20 @@
-﻿@model FoodMVC.Helpers.TimeCollect
+﻿@model FoodMVC.Models.LogReg
 
-<div>
-    <h4>TimeCollect</h4>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 text-center">
+            @Html.DisplayNameFor(model => model.ResentTime)<br />
+            @Html.DisplayFor(model => model.ResentTime)
+        </div>
+        <div class="col-sm-4 text-center">
+            @Html.DisplayNameFor(model => model.LastLog)<br />
+            @Html.DisplayFor(model => model.LastLog)
+
+        </div>
+        <div class="col-sm-4 text-center">
+            @Html.DisplayNameFor(model => model.LastMod)<br />
+            <span class="text-danger">@Html.DisplayFor(model  => model.LastMod)</span>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<br />

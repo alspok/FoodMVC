@@ -6,7 +6,7 @@
 
 <h2>Redaguoti</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "LogsRegs", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     
@@ -42,7 +42,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.Role,
+                                      new SelectList(new List<string> { "guest", "admin"}),
+                                      "guest / admin",
+                                      new { @class = "form-control"})
+                @*@Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
             </div>
         </div>

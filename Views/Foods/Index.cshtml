@@ -43,66 +43,83 @@
 
     @{
         int i = 1;
+        string fontStyle = string.Empty;
+
         foreach (var item in Model)
         {
-            if (item.Softdel)
+            switch (item.Softdel)
             {
-                style = "color: black";
+                case 0:
+                    fontStyle = "font-weight:bold";
+                    break;
+                case 1:
+                    fontStyle = "text-decoration:line-through";
+                    break;
+                case 2:
+                    fontStyle = "color: #736F6E";
+                    break;
             }
-            else
-            {
-                style = "text-decoration: line-through";
-            }
+
+
+
+            //if (item.Softdel)
+            //{
+            //    style = "color: black";
+            //}
+            //else
+            //{
+            //    style = "text-decoration: line-through";
+            //}
 
             if (item.Type == 0)
             {
                 <tr>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @i
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Item)
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
-                    @{
-                    if (userRole.Equals("admin"))
-                    {
+                           @{
+                                if (userRole.Equals("admin") || userRole.Equals("superadmin"))
+                                {
                             <td>
                                 @Html.ActionLink("Keisti", "Edit", new { id = item.Id }) |
                                 @Html.ActionLink("Trinti", "Delete", new { id = item.Id }) |
                                 @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
                             </td>
-                        }
-                    else
-                    {
+                                                }
+                                else
+                                {
                             <td>
                                 @Html.ActionLink("Trinti laikinai", "SoftDelete", new { id = item.Id })
                             </td>
-                        }
-                }
+                                                }
+                            }
                 </tr>
                 i = i + 1;
-            }
-        }
+                        }
+                    }
 
-    }
+                }
 </table>
 
 <h2>Kitos prekės</h2>
 
 @{
-    if (userRole.Equals("admin"))
-    {
+                    if (userRole.Equals("admin"))
+                    {
         <p>
             @Html.ActionLink("Įvesti naują prekę", "Create");
         </p>
-    }
-}
+                    }
+                }
 
 <table class="table">
     <tr>
@@ -125,32 +142,45 @@
         i = 1;
         foreach (var item in Model)
         {
-            if (item.Softdel)
+            switch (item.Softdel)
             {
-                style = "color: black";
+                case 0:
+                    fontStyle = "font-weight:bold";
+                    break;
+                case 1:
+                    fontStyle = "text-decoration:line-through";
+                    break;
+                case 2:
+                    fontStyle = "color: #736F6E";
+                    break;
             }
-            else
-            {
-                style = "text-decoration: line-through";
-            }
+
+            //if (item.Softdel)
+            //{
+            //    style = "color: black";
+            //}
+            //else
+            //{
+            //    style = "text-decoration: line-through";
+            //}
 
             if (item.Type == 1)
             {
                 <tr>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @i
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Item)
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
-                    <td style="@style">
+                    <td style="@fontStyle">
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     @{
-                        if (userRole.Equals("admin"))
+                        if (userRole.Equals("admin") || userRole.Equals("superadmin"))
                         {
                             <td>
                                 @Html.ActionLink("Keisti", "Edit", new { id = item.Id }) |

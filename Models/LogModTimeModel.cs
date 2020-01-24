@@ -8,6 +8,6 @@ namespace FoodMVC.Models
     public class LogModTimeModel
     {
         public DateTime LastLog { get; set; }
-        public DateTime ModLog { get; set; }
+        public DateTime LastMod { get; set; }
     }
 }
